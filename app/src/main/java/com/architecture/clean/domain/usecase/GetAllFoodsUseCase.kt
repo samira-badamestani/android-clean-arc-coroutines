@@ -10,7 +10,9 @@ class GetAllFoodsUseCase @Inject constructor(
     errorUtil: CloudErrorMapper,
     private val appRepository: AppRepository
 ) : UseCase<MutableList<Food>>(errorUtil) {
+
     override suspend fun executeOnBackground(): MutableList<Food> {
         return appRepository.selectAllFoods()
     }
+
 }

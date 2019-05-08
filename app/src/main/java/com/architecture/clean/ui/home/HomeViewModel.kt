@@ -16,7 +16,9 @@ class HomeViewModel @Inject constructor(
     private val insertFoodsUseCase: InsertFoodsUseCase,
     private val getAllFoodsUseCase: GetAllFoodsUseCase
 ) : ViewModel() {
+
     private val TAG = HomeViewModel::class.java.simpleName
+
     val homeData: MutableLiveData<FoodDto> by lazy { MutableLiveData<FoodDto>() }
     val error: MutableLiveData<ErrorModel> by lazy { MutableLiveData<ErrorModel>() }
     val foodsCount: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }

@@ -19,7 +19,6 @@ import android.util.Pair as UtilPair
 
 
 class HomeFragment : DaggerFragment() {
-    private val TAG: String = HomeFragment::class.java.simpleName
 
     companion object {
         val FRAGMENT_NAME: String = HomeFragment::class.java.name
@@ -27,16 +26,20 @@ class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val TAG: String = HomeFragment::class.java.simpleName
     private val viewModel: HomeViewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
     }
     val adapter: HomeAdapter by lazy { HomeAdapter(arrayListOf()) }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         with(viewModel) {
             homeData.observe(this@HomeFragment, Observer {
                 initView(it)

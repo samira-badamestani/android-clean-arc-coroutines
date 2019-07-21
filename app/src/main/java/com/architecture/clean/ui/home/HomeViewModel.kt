@@ -1,7 +1,7 @@
 package com.architecture.clean.ui.home
 
-import androidx.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.architecture.clean.domain.model.FoodDto
 import com.architecture.clean.domain.model.response.ErrorModel
@@ -11,17 +11,21 @@ import com.architecture.clean.domain.usecase.GetHomeUseCase
 import com.architecture.clean.domain.usecase.InsertFoodsUseCase
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val getHomeUseCase: GetHomeUseCase,
-                                        private val insertFoodsUseCase: InsertFoodsUseCase,
-                                        private val getAllFoodsUseCase: GetAllFoodsUseCase
+class HomeViewModel @Inject constructor(
+    private val getHomeUseCase: GetHomeUseCase,
+    private val insertFoodsUseCase: InsertFoodsUseCase,
+    private val getAllFoodsUseCase: GetAllFoodsUseCase
 ) : ViewModel() {
+
     private val TAG = HomeViewModel::class.java.simpleName
+
     val homeData: MutableLiveData<FoodDto> by lazy { MutableLiveData<FoodDto>() }
-    val error : MutableLiveData<ErrorModel> by lazy { MutableLiveData<ErrorModel>() }
-    val foodsCount : MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+    val error: MutableLiveData<ErrorModel> by lazy { MutableLiveData<ErrorModel>() }
+    val foodsCount: MutableLiveData<Int> by lazy { MutableLiveData<Int>() }
+
     init {
 
-        getHomeUseCase.execute{
+        getHomeUseCase.execute {
             onComplete {
                 Log.d(TAG, it.toString())
                 homeData.value = it
@@ -29,10 +33,10 @@ class HomeViewModel @Inject constructor(private val getHomeUseCase: GetHomeUseCa
             }
 
             onError { throwable ->
-                if(throwable.errorStatus== ErrorStatus.UNAUTHORIZED){
+                if (throwable.errorStatus == ErrorStatus.UNAUTHORIZED) {
                     doReshresh()
-                }else{
-                    error.value=throwable
+                } else {
+                    error.value = throwable
                 }
 
             }
@@ -48,8 +52,8 @@ class HomeViewModel @Inject constructor(private val getHomeUseCase: GetHomeUseCa
     }
 
 
-    fun insert(foodDto: FoodDto){
-        insertFoodsUseCase.foodDto=foodDto
+    fun insert(foodDto: FoodDto) {
+        insertFoodsUseCase.foodDto = foodDto
         insertFoodsUseCase.execute {
 
             onComplete {
@@ -57,7 +61,7 @@ class HomeViewModel @Inject constructor(private val getHomeUseCase: GetHomeUseCa
             }
 
             onError { throwable ->
-                error.value=throwable
+                error.value = throwable
             }
 
             onCancel {
@@ -69,10 +73,10 @@ class HomeViewModel @Inject constructor(private val getHomeUseCase: GetHomeUseCa
     private fun returnFoodsInDb() {
         getAllFoodsUseCase.execute {
             onComplete {
-                foodsCount.value=it.size
+                foodsCount.value = it.size
             }
             onError {
-                error.value=it
+                error.value = it
             }
         }
     }
